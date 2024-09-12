@@ -59,3 +59,61 @@ Para configurar y ejecutar el proyecto localmente, asegúrate de tener instalada
     python manage.py runserver
     ```
 
+## Uso de la API REST
+
+El servicio expone un único endpoint API para consultar los datos de precios:
+
+GET /price-view/
+
+
+#### Parámetros de Consulta:
+- `application_date` (formato ISO 8601): Fecha en la que el precio debe ser efectivo.
+- `product_id`: ID del producto a consultar.
+- `brand_id`: ID de la marca/tienda.
+
+#### Ejemplo:
+```bash
+GET /price-view/?product_id=35455&brand_id=1&application_date=2020-06-14T10:00:00Z
+```
+
+```json
+{
+  "product_id": 35455,
+  "brand_id": 1,
+  "price_list": 1,
+  "start_date": "2020-06-14T00:00:00+00:00",
+  "end_date": "2020-12-31T23:59:59+00:00",
+  "price": 35.50
+}
+```
+## Pruebas
+
+Para garantizar la funcionalidad del servicio, se implementaron varios casos de prueba utilizando `pytest`. Estas pruebas validan que se devuelvan los datos de precios correctos para varios escenarios.
+
+### Casos de Prueba:
+
+1. **Prueba 1**: Solicitud de precio a las 10:00 del 14 de junio para el producto 35455, marca 1.
+2. **Prueba 2**: Solicitud de precio a las 16:00 del 14 de junio para el producto 35455, marca 1.
+3. **Prueba 3**: Solicitud de precio a las 21:00 del 14 de junio para el producto 35455, marca 1.
+4. **Prueba 4**: Solicitud de precio a las 10:00 del 15 de junio para el producto 35455, marca 1.
+5. **Prueba 5**: Solicitud de precio a las 21:00 del 16 de junio para el producto 35455, marca 1.
+
+### Ejecución de Pruebas:
+
+Ejecuta el siguiente comando para ejecutar las pruebas:
+
+```bash
+pytest
+```
+
+## Consideraciones de Diseño
+
+- **Django ORM**: Se utiliza el ORM de Django para interactuar con la base de datos SQLite, lo que facilita la validación de datos y la gestión de restricciones.
+- **Validación Personalizada**: Se asegura que `start_date` sea anterior a `end_date` y que los precios no puedan ser negativos mediante validaciones tanto a nivel de base de datos como a nivel de aplicación.
+- **Priorización**: El campo `priority` garantiza que, si dos precios se superponen en el tiempo, se seleccione el de mayor prioridad.
+
+## Conclusión
+
+Este proyecto demuestra la capacidad de construir un servicio API robusto que pueda manejar lógica compleja de precios. El uso de Django y SQLite permite un desarrollo rápido y pruebas sencillas, mientras que `pytest` asegura la calidad y corrección del código. El servicio está diseñado para ser escalable y adaptable a nuevos requisitos, como agregar soporte para más monedas o extender el modelo de precios.
+
+
