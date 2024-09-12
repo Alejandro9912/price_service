@@ -1,4 +1,4 @@
-# Price Service - Prueba Técnica para Desarrollador Junior
+# Price Service 
 
 ## Descripción del Proyecto
 
