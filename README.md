@@ -67,7 +67,7 @@ GET /price-view/
 
 
 #### Parámetros de Consulta:
-- `application_date` (formato ISO 8601): Fecha en la que el precio debe ser efectivo.
+- `application_date` : Fecha en la que el precio debe ser efectivo.
 - `product_id`: ID del producto a consultar.
 - `brand_id`: ID de la marca/tienda.
 
